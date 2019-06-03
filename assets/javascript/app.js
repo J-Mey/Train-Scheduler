@@ -66,19 +66,36 @@ var firebaseConfig = {
     console.log(trainFrequency);
 
     // setting format for train time
-    var newTrainFormat = moment.unix(trainTime).format("HH:mm");
-    
+    var newTrainFormat = moment(trainTime, "HH:mm").subtract(1, "years");
+    console.log(newTrainFormat);
 
+    // Current time
+    var currentTime = moment();
+    console.log("current time: " + moment(currentTime).format("HH:mm"));
 
-    // Calculate the train frequency
-    var minutesAway
+    // Difference between time
+    var diffTime = moment().diff(moment(newTrainFormat), "minutes");
+    console.log("Difference In Time: " + diffTime);
 
+    // Remainding time apart 
+    var tRemainder = diffTime % trainFrequency;
+    console.log(tRemainder);
+
+    // Minutes 
+    var minutesAway = trainFrequency - tRemainder;
+    console.log("Minutes Till Train: " + minutesAway);
+
+    // Next arrival time of train
+    var nextArrival = moment().add(minutesAway, "minutes");
+    console.log("Arrival Time: " + moment(nextArrival).format("HH:mm"));
+
+ 
     // Create the new row
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(trainDestination),
-        $("<td>").text(newTrainFormat),
         $("<td>").text(trainFrequency),
+        $("<td>").text(nextArrival),
         $("<td>").text(minutesAway),
     );
 
